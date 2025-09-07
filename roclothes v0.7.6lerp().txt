@@ -1,4 +1,4 @@
-﻿--[[	
+--[[	
 
 	/ ＲＯＣＬＯＴＨＥＳ
 	Version - 0.7.6:lerp()
@@ -7870,6 +7870,23 @@ function RoClothes(Player)
 				},
 				["Function"] = "OilUp2"
 			}, 
+			["theOilerFunction3"] = {
+				["Instance"] = "Part",
+				["Name"] = "UnnecessaryPart",
+				["Size"] = Vector3.new(0,0,0),
+				["CFrame"] = CFrame.new(0,0,0),
+				["Transparency"] = 1,
+				["Material"] = Enum.Material.Plastic,
+				["DoubleSided"] = false,
+				["Color"] = {
+					["Tone"] = "Base",
+					["Color"] = Color3.fromRGB(0, 0, 0),
+				},
+				["Parent"] = {
+					[1] = "Torso"
+				},
+				["Function"] = "OilUp3"
+			}, 
 			["RBreastFreckles"] = {
 				["Instance"] = "Part",
 				["Name"] = "UnnecessaryPart",
@@ -9621,6 +9638,11 @@ function RoClothes(Player)
 				[1] = "theOilerFunction2",
 			}
 		},
+		["Oiled [SKINONLY]"] = {
+			["Weld"] = {
+				[1] = "theOilerFunction3",
+			}
+		},
 		["Breast Freckles"] = {
 			["Weld"] = {
 				[1] = "RBreastFreckles",
@@ -9795,12 +9817,20 @@ function RoClothes(Player)
 				v.MaterialVariant = "wetSmoothROCLOTHES"
 				if v:FindFirstChildOfClass("SurfaceAppearance") then
 					v.TextureID = v:FindFirstChildOfClass("SurfaceAppearance").ColorMap
+					if v:FindFirstChildOfClass("SurfaceAppearance").AlphaMode == Enum.AlphaMode.Transparency then
+						v.Transparency = 0.01
+						v:SetAttribute("Alpha",0.01)
+					end
 					v:FindFirstChildOfClass("SurfaceAppearance"):Destroy()
 				end
 			else
 				v.Material = Enum.Material.Glass
 				if v:FindFirstChildOfClass("SurfaceAppearance") then
 					v.TextureID = v:FindFirstChildOfClass("SurfaceAppearance").ColorMap
+					if v:FindFirstChildOfClass("SurfaceAppearance").AlphaMode == Enum.AlphaMode.Transparency then
+						v.Transparency = 0.01
+						v:SetAttribute("Alpha",0.01)
+					end
 					v:FindFirstChildOfClass("SurfaceAppearance"):Destroy()
 				end
 			end
@@ -9823,6 +9853,10 @@ function RoClothes(Player)
 				v.Material = Enum.Material.Glass
 				if v:FindFirstChildOfClass("SurfaceAppearance") then
 					v.TextureID = v:FindFirstChildOfClass("SurfaceAppearance").ColorMap
+					if v:FindFirstChildOfClass("SurfaceAppearance").AlphaMode == Enum.AlphaMode.Transparency then
+						v.Transparency = 0.01
+						v:SetAttribute("Alpha",0.01)
+					end
 					v:FindFirstChildOfClass("SurfaceAppearance"):Destroy()
 				end
 			else
@@ -9842,6 +9876,10 @@ function RoClothes(Player)
 				v.MaterialVariant = "wetSmoothROCLOTHES"
 				if v:FindFirstChildOfClass("SurfaceAppearance") then
 					v.TextureID = v:FindFirstChildOfClass("SurfaceAppearance").ColorMap
+					if v:FindFirstChildOfClass("SurfaceAppearance").AlphaMode == Enum.AlphaMode.Transparency then
+						v.Transparency = 0.01
+						v:SetAttribute("Alpha",0.01)
+					end
 					v:FindFirstChildOfClass("SurfaceAppearance"):Destroy()
 				end
 			end
@@ -9855,6 +9893,33 @@ function RoClothes(Player)
 					oil(v)
 					v.Transparency = 0.01
 				end
+			end
+		end)
+	end
+	function Function.OilUp3(ObjectInstance, Character, Extra, Data)
+		local function oil(v)
+			if game:GetService("RunService"):IsStudio() then
+				local mat
+				if game:GetService("MaterialService"):FindFirstChild("wetSmoothROCLOTHES") then
+					mat = game:GetService("MaterialService")["wetSmoothROCLOTHES"]
+				else
+					mat = Instance.new("MaterialVariant",game:GetService("MaterialService"))
+					mat.Name="wetSmoothROCLOTHES"
+					mat.BaseMaterial = Enum.Material.SmoothPlastic
+					mat.MaterialPattern = Enum.MaterialPattern.Organic
+					mat.RoughnessMap = "rbxassetid://14142895952"
+					mat:AddTag("RoClothes")
+				end
+
+				v.Material = Enum.Material.SmoothPlastic
+				v.MaterialVariant = "wetSmoothROCLOTHES"
+			else
+				v.Material = Enum.Material.Glass
+			end
+		end
+		task.delay(0,function()
+			for i, v in pairs(PlayerData[Data].CurrentPartList.Organ) do
+				oil(v)
 			end
 		end)
 	end
@@ -13054,8 +13119,8 @@ function RoClothes(Player)
 										transparent(PData.CurrentPartList["Clothes"]["Breasts Pants"],0)
 									end
 									if PData.CurrentPartList["Clothes"]["Right Butt Shirt"] then
-										transparent(PData.CurrentPartList["Clothes"]["Left Butt Shirt"],0)
-										transparent(PData.CurrentPartList["Clothes"]["Right Butt Shirt"],0)
+										transparent(PData.CurrentPartList["Clothes"]["Left Butt Shirt"],PData.CurrentPartList["Clothes"]["Left Butt Shirt"]:GetAttribute("Alpha") or 0)
+										transparent(PData.CurrentPartList["Clothes"]["Right Butt Shirt"],PData.CurrentPartList["Clothes"]["Right Butt Shirt"]:GetAttribute("Alpha") or 0)
 									end
 								end
 							end
